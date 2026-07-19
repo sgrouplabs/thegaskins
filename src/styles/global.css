@@ -147,6 +147,44 @@ body::before {
   border-color: var(--color-veil-600);
 }
 
+/* Glassmorphism — frosted, translucent, minimal luxury container.
+   Used by the Vault cards per the "neatly bordered in a minimal
+   glassmorphism container" requirement. */
+.surface-glass {
+  background: linear-gradient(
+    160deg,
+    rgba(255, 255, 255, 0.045),
+    rgba(255, 255, 255, 0.012) 40%,
+    rgba(255, 255, 255, 0.02)
+  );
+  backdrop-filter: blur(14px) saturate(120%);
+  -webkit-backdrop-filter: blur(14px) saturate(120%);
+  border: 1px solid rgba(245, 245, 247, 0.10);
+  border-radius: var(--radius-card);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.04) inset,
+    0 24px 60px -28px rgba(0, 0, 0, 0.7);
+  position: relative;
+  transition: border-color 0.45s ease, transform 0.45s ease, box-shadow 0.45s ease;
+  overflow: hidden;
+}
+.surface-glass::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    120% 80% at 25% 0%,
+    rgba(212, 175, 55, 0.10),
+    transparent 55%
+  );
+  opacity: 0.9;
+}
+.surface-glass:hover {
+  border-color: rgba(212, 175, 55, 0.32);
+  transform: translateY(-2px);
+}
+
 /* Cream digital stationery — used in the War Room cards */
 .surface-stationery {
   background-color: #f3efe6;

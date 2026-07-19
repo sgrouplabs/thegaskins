@@ -8,10 +8,14 @@
 
 | # | Module | Route | Purpose |
 |---|--------|-------|---------|
-| I | **The Welcome Concierge** | `/` | Hero typographical header, dynamic greeting, "At a Glance" matrix of the next three films, and minimalist metric slats. |
-| II | **The Vault** | `/vault` | Masonry grid of curated inspiration cards with capsule tag filters (All / Reels / Hooks / Aesthetics). Each card has a placeholder thumbnail, raw URL slot, and a strategic study note. |
+| I | **The Welcome Concierge** | `/` | Hero typographical header, dynamic greeting, and an "At a Glance" matrix that pulls the next three filming tasks directly from the schedule. Minimalist metric slats. |
+| II | **The Vault** | `/vault` | Masonry grid of curated inspiration references in minimal glassmorphism containers — each card holds the title, outbound profile link, and a strategic strategy note. Capsule tag filters (All / Reels / Hooks / Aesthetics). |
 | III | **The War Room** | `/war-room` | Three-column Kanban — *Raw Ideas*, *In Refinement*, *Ready to Film*. Cream digital stationery cards against the dark backdrop, with drag-and-drop. |
-| IV | **The Itinerary** | `/itinerary` | Clean monthly calendar grid. Clicking a dated shoot slides in an adjacent detail panel (title, vibe profile, deliverables checklist, status indicator) — no full page reload. |
+| IV | **The Itinerary** | `/itinerary` | Clean monthly calendar with exactly four core shoots across two weeks (starting Wed Jul 22, 2026). Clicking a date opens a Preact island drawer with the shoot brief and a **reactive status selector** (Pending / Filmed / Edited) — changing status updates the drawer and the calendar cell indicator live, no page reload. |
+
+## Interactive Engine
+
+The Itinerary's drawer is a **Preact client island** (`src/components/ItineraryDrawer.tsx`, hydrated via `client:load`). It owns clean frontend local state for each shoot's status. The static Astro-rendered calendar calls into the island through a tiny bridge (`window.__itinerary__.open(day)`), so the calendar grid stays static HTML while the island handles all reactivity. Status changes propagate back to the matching calendar cell's indicator color in real time.
 
 ## Design System
 

@@ -1,9 +1,11 @@
 ---
 /**
  * VaultCard.astro
- * A single inspiration card in The Vault.
- * Renders: placeholder thumbnail slot, sophisticated title, raw URL link slot,
- * and a "Strategic Strategy Note" section explaining why to study this.
+ * A single inspiration reference in The Vault.
+ * Minimal glassmorphism container holding:
+ *   - the reference title,
+ *   - an outbound profile link,
+ *   - the strategic strategy note.
  */
 import type { VaultCard as TVaultCard } from '../config/site';
 
@@ -14,54 +16,50 @@ const { card } = Astro.props;
 ---
 
 <article
-  class="vault-card surface-card break-inside-avoid mb-6 flex flex-col overflow-hidden group"
+  class="vault-card surface-glass break-inside-avoid mb-6 flex flex-col group"
   data-category={card.category}
 >
-  <!-- Placeholder thumbnail slot -->
+  <!-- Top: faux editorial thumbnail + category chip -->
   <a
     href={card.url}
     target="_blank"
     rel="noopener noreferrer"
-    class="relative block aspect-[4/5] overflow-hidden bg-onyx-800"
+    class="relative block aspect-[16/10] overflow-hidden"
     aria-label={`Open reference: ${card.title}`}
   >
-    <!-- Faux editorial thumbnail: layered gradients, no real image -->
     <div
       class="absolute inset-0 transition-transform duration-700 group-hover:scale-105"
       style={`background:
-        radial-gradient(120% 80% at 30% 20%, rgba(212,175,55,0.18), transparent 60%),
+        radial-gradient(120% 80% at 30% 20%, rgba(212,175,55,0.20), transparent 60%),
         radial-gradient(80% 60% at 75% 80%, rgba(245,245,247,0.06), transparent 55%),
         linear-gradient(160deg, #1a1a1d, #0e0e10);
       `}
     >
     </div>
-    <!-- Monogram mark in the corner, like an editorial credit -->
     <span
-      class="absolute top-4 left-4 font-mono text-[0.62rem] tracking-wide-luxe uppercase text-gold-muted border border-gold-500/30 px-2 py-1"
+      class="absolute top-4 left-4 font-mono text-[0.62rem] tracking-wide-luxe uppercase text-gold-muted border border-gold-500/30 px-2 py-1 backdrop-blur-sm"
     >
       {card.category}
     </span>
-    <span
-      class="absolute bottom-4 right-4 font-display text-gold-300/70 text-2xl leading-none"
-    >
+    <span class="absolute bottom-4 right-4 font-display text-gold-300/80 text-2xl leading-none">
       ↗
     </span>
   </a>
 
   <!-- Body -->
-  <div class="p-6 flex-1 flex flex-col">
+  <div class="relative p-6 flex-1 flex flex-col">
     <h3
       class="font-display text-xl text-paper-50 leading-tight group-hover:text-gold-300 transition-colors duration-500"
     >
       {card.title}
     </h3>
 
-    <!-- Raw URL link slot -->
+    <!-- Outbound profile link -->
     <a
       href={card.url}
       target="_blank"
       rel="noopener noreferrer"
-      class="mt-3 inline-flex items-center gap-2 text-[0.72rem] font-mono text-paper-400 hover:text-gold-300 transition-colors duration-300 truncate max-w-full"
+      class="mt-3 inline-flex items-center gap-2 text-[0.72rem] font-mono text-paper-300 hover:text-gold-300 transition-colors duration-300 truncate max-w-full"
     >
       <span class="text-gold-muted">↗</span>
       <span class="truncate">{card.url}</span>
@@ -69,16 +67,16 @@ const { card } = Astro.props;
 
     <div class="rule-hair my-4"></div>
 
-    <!-- Strategic Strategy Note -->
+    <!-- Strategic strategy note -->
     <div>
       <p class="eyebrow mb-2">Strategic Note</p>
-      <p class="font-serif text-paper-200 text-[0.95rem] leading-relaxed italic">
+      <p class="font-serif text-paper-100 text-[0.95rem] leading-relaxed italic">
         {card.strategy}
       </p>
     </div>
 
     <p class="mt-5 text-[0.62rem] font-mono text-paper-400 tracking-wide-luxe uppercase">
-      Source · {card.source ?? 'curated'}
+      Source · {card.source}
     </p>
   </div>
 </article>
