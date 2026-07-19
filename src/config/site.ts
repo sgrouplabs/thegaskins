@@ -202,7 +202,7 @@ export type VaultCard = {
 export const VAULT_CARDS: VaultCard[] = [
   {
     id: 'v1',
-    title: 'The High-Discipline 5 AM Framework',
+    title: 'Dayna Bolden',
     url: 'https://www.tiktok.com/@daynabolden',
     category: 'Hooks',
     strategy:
@@ -211,39 +211,93 @@ export const VAULT_CARDS: VaultCard[] = [
   },
   {
     id: 'v2',
-    title: 'Visual Hooks & Spatial Creative Direction',
-    url: 'https://www.instagram.com/donyetaylor/reels/',
+    title: 'Christin Sherise',
+    url: 'https://www.tiktok.com/@christinsherise',
+    category: 'Aesthetics',
+    strategy:
+      "Analyze her hyper-clean home aesthetics and relatable lifestyle vlogging pacing.",
+    source: '@christinsherise',
+  },
+  {
+    id: 'v3',
+    title: 'David Omari',
+    url: 'https://www.tiktok.com/@davidomari',
+    category: 'Hooks',
+    strategy:
+      'Study his direct-to-camera authority on monetization and business scaling.',
+    source: '@davidomari',
+  },
+  {
+    id: 'v4',
+    title: 'Life w Jibran',
+    url: 'https://www.tiktok.com/@lifewjibran',
     category: 'Reels',
+    strategy:
+      "Examine his relatable 'Day in the Life' pacing for modern tech/professional routines.",
+    source: '@lifewjibran',
+  },
+  {
+    id: 'v5',
+    title: 'GoGo & Mo',
+    url: 'https://www.tiktok.com/@gogoandmo',
+    category: 'Aesthetics',
+    strategy:
+      'Examine the balance of dual-frame focus where both partners bring aligned energy to the business narrative.',
+    source: '@gogoandmo',
+  },
+  {
+    id: 'v6',
+    title: 'Ms. Preschool Owner',
+    url: 'https://www.tiktok.com/@ms.preschoolowner',
+    category: 'Reels',
+    strategy:
+      'Note how she breaks down the granular, B2B operational side of running a brick-and-mortar facility.',
+    source: '@ms.preschoolowner',
+  },
+  {
+    id: 'v7',
+    title: 'Ronne Brown',
+    url: 'https://www.instagram.com/ronnebrown/reels/',
+    category: 'Reels',
+    strategy:
+      'Emulate the raw behind-the-scenes cuts—shifting smoothly between high-profile operations and warehouse management.',
+    source: '@ronnebrown',
+  },
+  {
+    id: 'v8',
+    title: 'DonYe Taylor',
+    url: 'https://www.instagram.com/donyetaylor/reels/',
+    category: 'Hooks',
     strategy:
       'Analyze how she uses rapid typographic overlays and bold text callouts within the first 3 seconds to command attention.',
     source: '@donyetaylor',
   },
   {
-    id: 'v3',
-    title: 'The Transparent Multi-Empire Hustle',
-    url: 'https://www.instagram.com/ronnebrown/reels/',
+    id: 'v9',
+    title: 'Kameron Monet',
+    url: 'https://www.instagram.com/kameronmonet/reels/',
     category: 'Reels',
     strategy:
-      'Emulate the raw, unglamorous behind-the-scenes cuts—shifting smoothly between high-profile operations and raw warehouse management.',
-    source: '@ronnebrown',
+      'Study her flawless voiceovers detailing her corporate-to-creator workflow.',
+    source: '@kameronmonet',
   },
   {
-    id: 'v4',
-    title: 'The Power Couple Co-Lifestyle Architecture',
-    url: 'https://www.tiktok.com/@gogoandmo',
-    category: 'Aesthetics',
-    strategy:
-      'Examine the balance of dual-frame focus where both partners bring separate but highly aligned energy to the business narrative.',
-    source: '@gogoandmo',
-  },
-  {
-    id: 'v5',
-    title: 'The Precision Operations & Asset Focus',
+    id: 'v10',
+    title: 'Detailz Matter',
     url: 'https://www.tiktok.com/@detailz.matter',
     category: 'Aesthetics',
     strategy:
-      'Incorporate satisfying, close-up sensory B-roll of premium assets and high-end vehicle maintenance to reinforce an elite, detail-oriented standard.',
+      'Incorporate satisfying, close-up sensory B-roll of premium assets and high-end vehicle maintenance.',
     source: '@detailz.matter',
+  },
+  {
+    id: 'v11',
+    title: 'Bliss Auto Detailing',
+    url: 'https://www.tiktok.com/@blissautodetailing',
+    category: 'Aesthetics',
+    strategy:
+      "Study the ASMR-style audio hooks and visually satisfying 'before and after' transitions.",
+    source: '@blissautodetailing',
   },
 ];
 

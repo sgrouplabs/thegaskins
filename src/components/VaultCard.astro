@@ -19,31 +19,46 @@ const { card } = Astro.props;
   class="vault-card surface-glass break-inside-avoid mb-6 flex flex-col group"
   data-category={card.category}
 >
-  <!-- Top: faux editorial thumbnail + category chip -->
+  <!-- Top: faux editorial thumbnail with boomerang preview effect -->
   <a
     href={card.url}
     target="_blank"
     rel="noopener noreferrer"
-    class="relative block aspect-[16/10] overflow-hidden"
+    class="relative block aspect-[16/10] overflow-hidden boomerang-stage"
     aria-label={`Open reference: ${card.title}`}
   >
+    <!-- Boomerang layer: a layered gradient that pans + zooms forward then
+         backward in an infinite alternate loop, mimicking the repeating
+         forward/backward motion of a TikTok/Reel boomerang clip. -->
     <div
-      class="absolute inset-0 transition-transform duration-700 group-hover:scale-105"
+      class="absolute inset-0 boomerang-pan"
       style={`background:
-        radial-gradient(120% 80% at 30% 20%, rgba(212,175,55,0.20), transparent 60%),
-        radial-gradient(80% 60% at 75% 80%, rgba(245,245,247,0.06), transparent 55%),
+        radial-gradient(120% 80% at 30% 20%, rgba(212,175,55,0.22), transparent 60%),
+        radial-gradient(80% 60% at 75% 80%, rgba(245,245,247,0.08), transparent 55%),
         linear-gradient(160deg, #1a1a1d, #0e0e10);
       `}
     >
     </div>
+    <!-- Soft scanline veil to sell the "video" feel -->
+    <div
+      class="absolute inset-0 opacity-30 mix-blend-soft-light pointer-events-none"
+      style="background: repeating-linear-gradient(0deg, rgba(255,255,255,0.04) 0 1px, transparent 1px 3px);"
+    ></div>
+
     <span
-      class="absolute top-4 left-4 font-mono text-[0.62rem] tracking-wide-luxe uppercase text-gold-muted border border-gold-500/30 px-2 py-1 backdrop-blur-sm"
+      class="absolute top-4 left-4 font-mono text-[0.62rem] tracking-wide-luxe uppercase text-gold-muted border border-gold-500/30 px-2 py-1 backdrop-blur-sm z-10"
     >
       {card.category}
     </span>
-    <span class="absolute bottom-4 right-4 font-display text-gold-300/80 text-2xl leading-none">
+    <span class="absolute bottom-4 right-4 font-display text-gold-300/80 text-2xl leading-none z-10">
       ↗
     </span>
+
+    <!-- Boomerang scrubber bar: a thin gold progress indicator that sweeps
+         left→right→left in lockstep with the pan, reinforcing the loop. -->
+    <div class="absolute bottom-0 left-0 right-0 h-[2px] bg-veil-700 z-10">
+      <span class="block h-full w-1/3 bg-gold-400 boomerang-scrub"></span>
+    </div>
   </a>
 
   <!-- Body -->
