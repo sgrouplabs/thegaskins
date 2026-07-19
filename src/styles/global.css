@@ -286,49 +286,9 @@ body::before {
   animation: fade-rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-/* Boomerang preview — mimics the forward/backward loop of a Reel.
-   The gradient layer pans + zooms forward then reverses, in an
-   infinite alternate cycle. The scrubber bar sweeps in lockstep. */
-@keyframes boomerang-pan {
-  0% {
-    transform: scale(1.04) translate(0, 0);
-  }
-  50% {
-    transform: scale(1.16) translate(-3%, -2%);
-  }
-  100% {
-    transform: scale(1.04) translate(0, 0);
-  }
-}
-.boomerang-pan {
-  animation: boomerang-pan 4.2s ease-in-out infinite alternate;
-  will-change: transform;
-}
-
-@keyframes boomerang-scrub {
-  0%   { transform: translateX(0%); }
-  50%  { transform: translateX(220%); }
-  100% { transform: translateX(0%); }
-}
-.boomerang-scrub {
-  animation: boomerang-scrub 4.2s ease-in-out infinite alternate;
-  will-change: transform;
-}
-
-/* When the card is hovered, speed up the loop slightly to feel responsive. */
-.boomerang-stage:hover .boomerang-pan,
-.boomerang-stage:hover .boomerang-scrub {
-  animation-duration: 2.6s;
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .animate-fade-rise,
-  .boomerang-pan,
-  .boomerang-scrub {
+  .animate-fade-rise {
     animation: none !important;
-  }
-  .boomerang-pan {
-    transform: scale(1.08);
   }
 }
 

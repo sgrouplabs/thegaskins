@@ -3,9 +3,15 @@
  * VaultCard.astro
  * A single inspiration reference in The Vault.
  * Minimal glassmorphism container holding:
+ *   - a clean, instant editorial preview thumbnail (platform-styled),
  *   - the reference title,
  *   - an outbound profile link,
  *   - the strategic strategy note.
+ *
+ * The thumbnail is a static, high-quality fallback graphic built from
+ * layered gradients + minimalist typography that represents the profile's
+ * platform visual style (TikTok vs Instagram) so the vault remains clean,
+ * instant, and visually editorial. No video loops.
  */
 import type { VaultCard as TVaultCard } from '../config/site';
 
@@ -13,52 +19,104 @@ interface Props {
   card: TVaultCard;
 }
 const { card } = Astro.props;
+
+// Derive platform + handle from the URL for the thumbnail composition.
+const isInstagram = card.url.includes('instagram.com');
+const platform = isInstagram ? 'Instagram' : 'TikTok';
+const platformMark = isInstagram ? 'IG' : 'TT';
+// Handle: the last meaningful path segment (e.g. "@daynabolden" or "ronnebrown").
+const segments = card.url.replace(/\/$/, '').split('/');
+let handle = segments.pop() || card.source;
+if (handle === 'reels' && segments.length) handle = segments.pop() || card.source;
+
+// Monogram initials for the large thumbnail crest.
+const monogram = card.title
+  .replace(/[^A-Za-z\s]/g, '')
+  .split(/\s+/)
+  .filter(Boolean)
+  .slice(0, 2)
+  .map((w) => w[0])
+  .join('')
+  .toUpperCase();
+
+// Per-platform accent tint so TikTok vs Instagram read at a glance,
+// both kept muted to honour the quiet-luxury palette.
+const platformTint = isInstagram
+  ? 'rgba(212,175,55,0.16)' // warm gold lean for IG
+  : 'rgba(159,176,196,0.14)'; // cool slate lean for TT
 ---
 
 <article
   class="vault-card surface-glass break-inside-avoid mb-6 flex flex-col group"
   data-category={card.category}
 >
-  <!-- Top: faux editorial thumbnail with boomerang preview effect -->
+  <!-- Clean editorial preview thumbnail (static, instant) -->
   <a
     href={card.url}
     target="_blank"
     rel="noopener noreferrer"
-    class="relative block aspect-[16/10] overflow-hidden boomerang-stage"
+    class="relative block aspect-[16/10] overflow-hidden"
     aria-label={`Open reference: ${card.title}`}
   >
-    <!-- Boomerang layer: a layered gradient that pans + zooms forward then
-         backward in an infinite alternate loop, mimicking the repeating
-         forward/backward motion of a TikTok/Reel boomerang clip. -->
+    <!-- Layered gradient base — the dark luxury cover graphic -->
     <div
-      class="absolute inset-0 boomerang-pan"
+      class="absolute inset-0"
       style={`background:
-        radial-gradient(120% 80% at 30% 20%, rgba(212,175,55,0.22), transparent 60%),
-        radial-gradient(80% 60% at 75% 80%, rgba(245,245,247,0.08), transparent 55%),
-        linear-gradient(160deg, #1a1a1d, #0e0e10);
+        radial-gradient(120% 90% at 28% 18%, ${platformTint}, transparent 58%),
+        radial-gradient(90% 70% at 78% 86%, rgba(245,245,247,0.05), transparent 55%),
+        linear-gradient(155deg, #1a1a1d 0%, #121214 55%, #0e0e10 100%);
       `}
     >
     </div>
-    <!-- Soft scanline veil to sell the "video" feel -->
-    <div
-      class="absolute inset-0 opacity-30 mix-blend-soft-light pointer-events-none"
-      style="background: repeating-linear-gradient(0deg, rgba(255,255,255,0.04) 0 1px, transparent 1px 3px);"
-    ></div>
 
-    <span
-      class="absolute top-4 left-4 font-mono text-[0.62rem] tracking-wide-luxe uppercase text-gold-muted border border-gold-500/30 px-2 py-1 backdrop-blur-sm z-10"
-    >
-      {card.category}
-    </span>
-    <span class="absolute bottom-4 right-4 font-display text-gold-300/80 text-2xl leading-none z-10">
-      ↗
-    </span>
+    <!-- Minimalist layout blocks — a quiet editorial grid suggesting a
+         profile cover, without imitating any platform's real UI. -->
+    <div class="absolute inset-0 flex flex-col justify-between p-5">
+      <!-- Top row: platform marker + category chip -->
+      <div class="flex items-center justify-between">
+        <span
+          class="font-mono text-[0.62rem] tracking-wide-luxe uppercase text-gold-muted border border-gold-500/30 px-2 py-1 backdrop-blur-sm"
+        >
+          {platform}
+        </span>
+        <span
+          class="font-mono text-[0.6rem] tracking-wide-luxe uppercase text-paper-400"
+        >
+          {card.category}
+        </span>
+      </div>
 
-    <!-- Boomerang scrubber bar: a thin gold progress indicator that sweeps
-         left→right→left in lockstep with the pan, reinforcing the loop. -->
-    <div class="absolute bottom-0 left-0 right-0 h-[2px] bg-veil-700 z-10">
-      <span class="block h-full w-1/3 bg-gold-400 boomerang-scrub"></span>
+      <!-- Center: monogram crest -->
+      <div class="flex-1 flex items-center justify-center">
+        <div class="relative">
+          <div
+            class="flex h-16 w-16 items-center justify-center border border-gold-500/25 font-display text-2xl tracking-luxe text-paper-100 group-hover:border-gold-400/50 group-hover:text-gold-300 transition-colors duration-500"
+            style="background: linear-gradient(160deg, rgba(255,255,255,0.03), rgba(0,0,0,0.2));"
+          >
+            {monogram}
+          </div>
+          <!-- thin gold corner accents -->
+          <span class="absolute -top-px -left-px w-2 h-2 border-t border-l border-gold-400/60"></span>
+          <span class="absolute -bottom-px -right-px w-2 h-2 border-b border-r border-gold-400/60"></span>
+        </div>
+      </div>
+
+      <!-- Bottom row: handle + platform badge + outbound chevron -->
+      <div class="flex items-end justify-between">
+        <div class="min-w-0">
+          <p class="font-mono text-[0.68rem] text-paper-300 truncate max-w-[180px]">
+            {handle}
+          </p>
+          <p class="mt-1 font-mono text-[0.58rem] tracking-wide-luxe uppercase text-paper-400">
+            {platformMark} · Reels
+          </p>
+        </div>
+        <span class="font-display text-gold-300/70 text-xl leading-none">↗</span>
+      </div>
     </div>
+
+    <!-- Subtle hairline frame to sell the "cover graphic" feel -->
+    <div class="absolute inset-0 border border-white/[0.04] pointer-events-none"></div>
   </a>
 
   <!-- Body -->
