@@ -1,0 +1,73 @@
+---
+/**
+ * DashboardLayout.astro
+ * The persistent luxury shell: monogram crest, sidebar nav, page canvas.
+ * Uses Astro's <ClientRouter /> so navigation between the four modules
+ * swaps only the canvas — the sidebar never reloads. This is the
+ * "no full page reload" guarantee for the Itinerary's drawer, etc.
+ */
+import { ClientRouter } from 'astro:transitions';
+import { BRAND, NAV } from '../config/site';
+import Sidebar from '../components/Sidebar.astro';
+import '../styles/global.css';
+
+interface Props {
+  active: string; // matches NavItem.id
+  title: string;
+  eyebrow?: string;
+}
+
+const { active, title, eyebrow } = Astro.props;
+const current = NAV.find((n) => n.id === active) ?? NAV[0];
+---
+
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title} — {BRAND.name}</title>
+    <meta
+      name="description"
+      content={`${BRAND.name} — ${BRAND.tagline}. A private creator command center.`}
+    />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- Editorial typography: Playfair Display (display serif) + Inter (sans) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+
+    <ClientRouter />
+  </head>
+  <body class="min-h-screen">
+    <div class="relative z-10 flex min-h-screen">
+      <Sidebar active={active} />
+
+      <main class="flex-1 min-w-0 lg:pl-0">
+        <div
+          class="mx-auto max-w-[1280px] px-6 md:px-12 lg:px-20 pt-10 md:pt-14 pb-24"
+        >
+          <header class="animate-fade-rise">
+            {eyebrow && <p class="eyebrow mb-3">{eyebrow}</p>}
+            <h1 class="headline text-3xl md:text-4xl lg:text-[2.75rem]">
+              {title}
+            </h1>
+            <div class="rule-gold mt-5 mb-10 w-full max-w-[260px]"></div>
+          </header>
+
+          <slot />
+        </div>
+      </main>
+    </div>
+
+    <script is:inline>
+      // Keep the body grain texture above Astro view-transition clones.
+      // (cosmetic — harmless if it runs once or twice.)
+    </script>
+  </body>
+</html>

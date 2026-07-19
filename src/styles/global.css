@@ -1,0 +1,265 @@
+@import 'tailwindcss';
+
+/* ============================================================
+   THE GASKINS — Design System
+   "Quiet Luxury": editorial, sophisticated, minimalist.
+   ============================================================ */
+
+@theme {
+  /* Onyx / charcoal background scale */
+  --color-onyx-950: #0e0e10;
+  --color-onyx-900: #121214;
+  --color-onyx-850: #161619;
+  --color-onyx-800: #1a1a1d;
+  --color-onyx-700: #222226;
+  --color-onyx-600: #2c2c31;
+
+  /* Off-white text scale */
+  --color-paper-50: #f5f5f7;
+  --color-paper-100: #ececef;
+  --color-paper-200: #d8d8dc;
+  --color-paper-300: #a8a8b0;
+  --color-paper-400: #6f6f78;
+
+  /* Warm muted grays (borders) */
+  --color-veil-700: #2a2a2e;
+  --color-veil-600: #34343a;
+  --color-veil-500: #42424a;
+
+  /* Brushed champagne gold accents */
+  --color-gold-300: #e4cf8e;
+  --color-gold-400: #d4af37;
+  --color-gold-500: #c5a059;
+  --color-gold-600: #a8853f;
+
+  /* Status accents (muted, editorial) */
+  --color-status-pending: #b8a878;
+  --color-status-filmed: #9fb0c4;
+  --color-status-edited: #c5a059;
+
+  /* Typography */
+  --font-serif: 'Cormorant Garamond', 'Playfair Display', Georgia, 'Times New Roman', serif;
+  --font-display: 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
+  --font-sans: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Courier New', monospace;
+
+  /* Tracking */
+  --tracking-luxe: 0.18em;
+  --tracking-wide-luxe: 0.32em;
+
+  /* Radius */
+  --radius-card: 2px;
+  --radius-pill: 999px;
+}
+
+/* ----------------------------------------------------------------
+   Base
+   ---------------------------------------------------------------- */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-onyx-900);
+  color: var(--color-paper-50);
+  font-family: var(--font-sans);
+  font-feature-settings: 'ss01', 'cv01';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  letter-spacing: 0.01em;
+  min-height: 100vh;
+}
+
+/* Hairline grain texture overlay — the "expensive" feel */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    radial-gradient(rgba(255, 255, 255, 0.014) 1px, transparent 1px),
+    radial-gradient(rgba(255, 255, 255, 0.008) 1px, transparent 1px);
+  background-size: 3px 3px, 7px 7px;
+  background-position: 0 0, 1px 2px;
+  opacity: 0.6;
+}
+
+/* ----------------------------------------------------------------
+   Typography utilities (editorial)
+   ---------------------------------------------------------------- */
+.font-display { font-family: var(--font-display); }
+.font-serif   { font-family: var(--font-serif); }
+.font-sans    { font-family: var(--font-sans); }
+.font-mono    { font-family: var(--font-mono); }
+
+.tracking-luxe       { letter-spacing: var(--tracking-luxe); }
+.tracking-wide-luxe  { letter-spacing: var(--tracking-wide-luxe); }
+
+/* Editorial section label — small caps, wide tracking, gold */
+.eyebrow {
+  font-family: var(--font-sans);
+  font-size: 0.6875rem;
+  letter-spacing: var(--tracking-wide-luxe);
+  text-transform: uppercase;
+  color: var(--color-gold-500);
+  font-weight: 500;
+}
+
+/* Display headline — high-contrast serif */
+.headline {
+  font-family: var(--font-display);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1.04;
+  color: var(--color-paper-50);
+}
+
+/* Thin gold rule used to divide sections */
+.rule-gold {
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    var(--color-gold-500) 22%,
+    var(--color-gold-500) 78%,
+    transparent
+  );
+  opacity: 0.55;
+}
+
+.rule-hair {
+  height: 1px;
+  background: var(--color-veil-700);
+}
+
+/* ----------------------------------------------------------------
+   Surfaces
+   ---------------------------------------------------------------- */
+.surface-card {
+  background-color: var(--color-onyx-850);
+  border: 1px solid var(--color-veil-700);
+  border-radius: var(--radius-card);
+  position: relative;
+  transition: border-color 0.4s ease, transform 0.4s ease;
+}
+.surface-card:hover {
+  border-color: var(--color-veil-600);
+}
+
+/* Cream digital stationery — used in the War Room cards */
+.surface-stationery {
+  background-color: #f3efe6;
+  color: #1f1d1a;
+  border: 1px solid #e0d8c4;
+  border-radius: var(--radius-card);
+  box-shadow:
+    0 1px 0 rgba(0, 0, 0, 0.25),
+    0 0 0 1px rgba(212, 175, 55, 0.06) inset;
+  position: relative;
+}
+.surface-stationery::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background-image:
+    radial-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+  background-size: 4px 4px;
+  opacity: 0.5;
+}
+
+/* ----------------------------------------------------------------
+   Interactive accents
+   ---------------------------------------------------------------- */
+.text-gold       { color: var(--color-gold-400); }
+.text-gold-muted { color: var(--color-gold-500); }
+
+.gold-underline {
+  position: relative;
+}
+.gold-underline::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -3px;
+  width: 0;
+  height: 1px;
+  background: var(--color-gold-400);
+  transition: width 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.gold-underline:hover::after,
+.gold-underline[aria-current='page']::after {
+  width: 100%;
+}
+
+/* Capsule filter button */
+.capsule {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1.25rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--color-veil-700);
+  background: transparent;
+  color: var(--color-paper-300);
+  font-size: 0.75rem;
+  letter-spacing: var(--tracking-luxe);
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.35s ease;
+  white-space: nowrap;
+}
+.capsule:hover {
+  color: var(--color-paper-50);
+  border-color: var(--color-veil-500);
+}
+.capsule.is-active {
+  background: var(--color-gold-400);
+  border-color: var(--color-gold-400);
+  color: #1a1a1d;
+  font-weight: 600;
+}
+
+/* ----------------------------------------------------------------
+   Scrollbar (editorial, slim)
+   ---------------------------------------------------------------- */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-veil-600) transparent;
+}
+*::-webkit-scrollbar { width: 8px; height: 8px; }
+*::-webkit-scrollbar-track { background: transparent; }
+*::-webkit-scrollbar-thumb {
+  background: var(--color-veil-600);
+  border-radius: 999px;
+}
+*::-webkit-scrollbar-thumb:hover { background: var(--color-veil-500); }
+
+/* ----------------------------------------------------------------
+   Animations
+   ---------------------------------------------------------------- */
+@keyframes fade-rise {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-rise {
+  animation: fade-rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes drawer-slide {
+  from { transform: translateX(100%); opacity: 0; }
+  to   { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes drawer-out {
+  from { transform: translateX(0); opacity: 1; }
+  to   { transform: translateX(100%); opacity: 0; }
+}
+
+/* View-transition polish */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.35s;
+}

@@ -1,0 +1,218 @@
+---
+/**
+ * itinerary.astro — The Monthly Filming Schedule (The Itinerary)
+ * Clean grid calendar of the current month. Clicking an active date
+ * slides out an adjacent drawer revealing the shoot's detail block —
+ * Shoot Title, Location/Vibe Profile, Deliverables Checklist, and
+ * an active status tracking indicator. No full page reload.
+ */
+import DashboardLayout from '../layouts/DashboardLayout.astro';
+import {
+  ITINERARY_MONTH_LABEL,
+  ITINERARY_MONTH_STARTS_ON,
+  ITINERARY_MONTH_DAYS,
+  SHOOTS,
+  STATUS_LABELS,
+} from '../config/site';
+
+// Build a 6-row x 7-col calendar grid with leading blanks.
+const cells: (number | null)[] = [];
+for (let i = 0; i < ITINERARY_MONTH_STARTS_ON; i++) cells.push(null);
+for (let d = 1; d <= ITINERARY_MONTH_DAYS; d++) cells.push(d);
+while (cells.length % 7 !== 0) cells.push(null);
+
+const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+const shootByDay = new Map(SHOOTS.map((s) => [s.day, s]));
+// Day-keyed object serialized into the page for the inline client script.
+const SHOOTS_BY_DAY = Object.fromEntries(SHOOTS.map((s) => [s.day, s]));
+const statusTone: Record<string, string> = {
+  pending: 'text-status-pending',
+  filmed: 'text-status-filmed',
+  edited: 'text-status-edited',
+};
+const statusDot: Record<string, string> = {
+  pending: 'bg-status-pending',
+  filmed: 'bg-status-filmed',
+  edited: 'bg-status-edited',
+};
+---
+
+<DashboardLayout
+  active="itinerary"
+  eyebrow="IV · The Itinerary"
+  title="The Monthly Filming Schedule"
+>
+  <div class="flex items-end justify-between flex-wrap gap-4 mb-10 animate-fade-rise">
+    <div>
+      <p class="eyebrow">Current Month</p>
+      <h2 class="font-display text-3xl text-paper-50 mt-2">{ITINERARY_MONTH_LABEL}</h2>
+    </div>
+    <div class="flex items-center gap-6 text-paper-400 text-xs tracking-luxe uppercase">
+      <span class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-status-pending"></span>Pending</span>
+      <span class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-status-filmed"></span>Filmed</span>
+      <span class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-status-edited"></span>Edited</span>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-10 animate-fade-rise" style="animation-delay: 80ms">
+    <!-- Calendar grid -->
+    <section>
+      <div class="grid grid-cols-7 gap-px bg-veil-700 border border-veil-700">
+        {
+          WEEKDAYS.map((d) => (
+            <div class="bg-onyx-900 px-2 py-3 text-center">
+              <span class="eyebrow text-paper-400">{d}</span>
+            </div>
+          ))
+        }
+        {
+          cells.map((day) => {
+            const shoot = day ? shootByDay.get(day) : null;
+            return (
+              <div
+                class:list={[
+                  'bg-onyx-900 min-h-[96px] p-3 flex flex-col relative',
+                  day === null && 'bg-onyx-950/60',
+                ]}
+              >
+                {day && (
+                  <span class="font-mono text-xs text-paper-400">{String(day).padStart(2, '0')}</span>
+                )}
+                {shoot && (
+                  <button
+                    class="itinerary-day group flex-1 mt-2 text-left cursor-pointer"
+                    data-day={day}
+                    aria-label={`View shoot on day ${day}: ${shoot.title}`}
+                  >
+                    <div class="flex items-center gap-1.5">
+                      <span class:list={['w-1.5 h-1.5 rounded-full', statusDot[shoot.status]]}></span>
+                      <span class="text-[0.7rem] font-sans text-paper-200 leading-tight line-clamp-2 group-hover:text-gold-300 transition-colors">
+                        {shoot.title}
+                      </span>
+                    </div>
+                  </button>
+                )}
+              </div>
+            );
+          })
+        }
+      </div>
+    </section>
+
+    <!-- Adjacent itinerary detail panel (drawer) -->
+    <aside
+      id="itinerary-drawer"
+      class="surface-card p-7 self-start sticky top-8 transition-all duration-500"
+      aria-live="polite"
+    >
+      <div id="drawer-empty">
+        <p class="eyebrow mb-3">Detail</p>
+        <h3 class="font-display text-2xl text-paper-50 leading-tight">
+          Select a dated shoot.
+        </h3>
+        <div class="rule-hair my-5"></div>
+        <p class="font-serif italic text-paper-300 leading-relaxed">
+          Tap any glowing date on the calendar to reveal its shoot brief —
+          location, vibe, deliverables, and status.
+        </p>
+        <div class="mt-8 grid grid-cols-3 gap-px bg-veil-700 border border-veil-700">
+          {
+            SHOOTS.filter((s) => s.status === 'pending').slice(0, 3).map((s) => (
+              <div class="bg-onyx-900 p-3 text-center">
+                <p class="font-mono text-xs text-gold-muted">{String(s.day).padStart(2, '0')}</p>
+                <p class="text-[0.6rem] text-paper-400 mt-1 tracking-luxe uppercase">Pending</p>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+
+      <div id="drawer-content" class="hidden">
+        <div class="flex items-start justify-between gap-4 mb-1">
+          <p class="eyebrow">Shoot Brief</p>
+          <span id="drawer-day" class="font-mono text-gold-muted text-sm"></span>
+        </div>
+        <h3 id="drawer-title" class="font-display text-2xl text-paper-50 leading-tight mt-2"></h3>
+
+        <div class="rule-gold my-5 w-full max-w-[80px]"></div>
+
+        <p class="eyebrow mb-2">Location / Vibe Profile</p>
+        <p id="drawer-vibe" class="font-serif italic text-paper-200 leading-relaxed mb-6"></p>
+
+        <p class="eyebrow mb-3">Deliverables Checklist</p>
+        <ul id="drawer-deliverables" class="space-y-2 mb-6"></ul>
+
+        <p class="eyebrow mb-2">Status</p>
+        <div class="flex items-center gap-3">
+          <span id="drawer-status-dot" class="w-2.5 h-2.5 rounded-full"></span>
+          <span id="drawer-status-label" class="font-sans tracking-luxe uppercase text-sm"></span>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <!-- Day-keyed shoot data, read by the inline client script above. -->
+  <script type="application/json" id="itinerary-data" set:html={JSON.stringify(SHOOTS_BY_DAY)}></script>
+</DashboardLayout>
+
+<script is:inline>
+  (function () {
+    const STATUS = {
+      pending: { label: 'Pending', dot: 'bg-status-pending', tone: 'text-status-pending' },
+      filmed:  { label: 'Filmed',  dot: 'bg-status-filmed',  tone: 'text-status-filmed' },
+      edited:  { label: 'Edited',  dot: 'bg-status-edited',  tone: 'text-status-edited' },
+    };
+
+    function bind() {
+      const dataEl = document.getElementById('itinerary-data');
+      const empty = document.getElementById('drawer-empty');
+      const content = document.getElementById('drawer-content');
+      const dayEl = document.getElementById('drawer-day');
+      const titleEl = document.getElementById('drawer-title');
+      const vibeEl = document.getElementById('drawer-vibe');
+      const delEl = document.getElementById('drawer-deliverables');
+      const dotEl = document.getElementById('drawer-status-dot');
+      const labelEl = document.getElementById('drawer-status-label');
+      if (!dataEl || !empty || !content) return;
+
+      let SHOOTS = {};
+      try { SHOOTS = JSON.parse(dataEl.textContent || '{}'); } catch (e) { SHOOTS = {}; }
+
+      document.querySelectorAll('.itinerary-day').forEach((btn) => {
+        if (btn.dataset.bound === '1') return;
+        btn.dataset.bound = '1';
+        btn.addEventListener('click', () => {
+          const day = Number(btn.getAttribute('data-day'));
+          const shoot = SHOOTS[day];
+          if (!shoot) return;
+
+          empty.classList.add('hidden');
+          content.classList.remove('hidden');
+
+          dayEl.textContent = 'Day · ' + String(day).padStart(2, '0');
+          titleEl.textContent = shoot.title;
+          vibeEl.textContent = shoot.vibe;
+
+          delEl.innerHTML = '';
+          shoot.deliverables.forEach((d) => {
+            const li = document.createElement('li');
+            li.className = 'flex items-center gap-3 text-sm text-paper-200';
+            li.innerHTML =
+              '<span class="w-3.5 h-3.5 border border-veil-500 rounded-[1px] flex items-center justify-center text-gold-muted text-[0.6rem]">✓</span>' +
+              '<span>' + d + '</span>';
+            delEl.appendChild(li);
+          });
+
+          const st = STATUS[shoot.status];
+          dotEl.className = 'w-2.5 h-2.5 rounded-full ' + st.dot;
+          labelEl.textContent = st.label;
+          labelEl.className = 'font-sans tracking-luxe uppercase text-sm ' + st.tone;
+        });
+      });
+    }
+
+    // Initial bind + re-bind after every Astro view-transition navigation.
+    bind();
+    document.addEventListener('astro:page-load', bind);
+  })();
+</script>

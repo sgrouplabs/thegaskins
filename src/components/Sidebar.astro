@@ -1,0 +1,138 @@
+---
+/**
+ * Sidebar.astro
+ * The persistent luxury navigation rail. Fixed on desktop, slide-down on mobile.
+ * Active link uses aria-current for the gold-underline reveal.
+ */
+import { BRAND, NAV } from '../config/site';
+
+interface Props {
+  active: string;
+}
+const { active } = Astro.props;
+const year = new Date().getFullYear();
+---
+
+<aside
+  id="sidebar"
+  class="fixed lg:static inset-y-0 left-0 z-40 w-64 shrink-0 border-r border-veil-700 bg-onyx-950/95 lg:bg-transparent backdrop-blur-md transition-transform duration-500 -translate-x-full lg:translate-x-0"
+  aria-label="Primary"
+>
+  <div class="flex h-full flex-col px-6 py-8">
+    <!-- Crest / monogram -->
+    <div class="mb-12">
+      <a href="/" class="block group" aria-label={`${BRAND.name} — home`}>
+        <div
+          class="flex h-12 w-12 items-center justify-center border border-gold-500/40 text-gold-400 font-display text-xl tracking-luxe group-hover:border-gold-400 transition-colors duration-500"
+        >
+          {BRAND.monogram}
+        </div>
+        <div class="mt-5">
+          <p class="font-display text-lg leading-none text-paper-50">{BRAND.name}</p>
+          <p class="eyebrow mt-2">{BRAND.tagline}</p>
+        </div>
+      </a>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="flex-1">
+      <p class="eyebrow mb-5 text-paper-400">Modules</p>
+      <ul class="space-y-1">
+        {
+          NAV.map((item) => {
+            const isActive = item.id === active;
+            return (
+              <li>
+                <a
+                  href={item.href}
+                  aria-current={isActive ? 'page' : undefined}
+                  class:list={[
+                    'gold-underline flex items-baseline gap-4 py-2.5 text-sm transition-colors duration-300',
+                    isActive
+                      ? 'text-paper-50'
+                      : 'text-paper-300 hover:text-paper-50',
+                  ]}
+                >
+                  <span class="font-mono text-[0.7rem] text-gold-muted w-6">
+                    {item.numeral}
+                  </span>
+                  <span class="flex flex-col leading-tight">
+                    <span class="font-sans tracking-luxe uppercase text-[0.78rem]">
+                      {item.label}
+                    </span>
+                    <span class="text-[0.68rem] text-paper-400 tracking-wide lowercase">
+                      {item.subtitle}
+                    </span>
+                  </span>
+                </a>
+              </li>
+            );
+          })
+        }
+      </ul>
+    </nav>
+
+    <!-- Footer mark -->
+    <div class="mt-12 pt-6 border-t border-veil-700">
+      <p class="eyebrow text-paper-400">Private Concierge</p>
+      <p class="mt-2 font-serif text-paper-300 text-sm italic">
+        “Restraint is the loudest signature.”
+      </p>
+      <p class="mt-4 font-mono text-[0.6rem] text-paper-400 tracking-wide-luxe">
+        © {year} {BRAND.name}
+      </p>
+    </div>
+  </div>
+</aside>
+
+<!-- Mobile top bar (shows monogram + menu toggle on small screens) -->
+<div
+  class="lg:hidden sticky top-0 z-30 flex items-center justify-between border-b border-veil-700 bg-onyx-950/95 backdrop-blur-md px-6 py-4"
+>
+  <a href="/" class="flex items-center gap-3" aria-label={`${BRAND.name} — home`}>
+    <span
+      class="flex h-9 w-9 items-center justify-center border border-gold-500/40 text-gold-400 font-display text-sm tracking-luxe"
+    >
+      {BRAND.monogram}
+    </span>
+    <span class="font-display text-paper-50">{BRAND.name}</span>
+  </a>
+  <button
+    id="sidebar-toggle"
+    class="text-paper-300 hover:text-paper-50 tracking-luxe text-xs uppercase border border-veil-700 px-3 py-2 transition-colors"
+    aria-controls="sidebar"
+    aria-expanded="false"
+  >
+    Menu
+  </button>
+</div>
+
+<script is:inline>
+  (function () {
+    const toggle = document.getElementById('sidebar-toggle');
+    const sidebar = document.getElementById('sidebar');
+    if (!toggle || !sidebar) return;
+    const close = () => {
+      sidebar.classList.add('-translate-x-full');
+      toggle.setAttribute('aria-expanded', 'false');
+    };
+    toggle.addEventListener('click', () => {
+      const open = sidebar.classList.toggle('-translate-x-full') === false;
+      toggle.setAttribute('aria-expanded', String(open));
+    });
+    // Close on nav click (mobile)
+    sidebar.querySelectorAll('a').forEach((a) =>
+      a.addEventListener('click', () => {
+        if (window.matchMedia('(max-width: 1023px)').matches) close();
+      })
+    );
+    // Close on outside tap (mobile)
+    document.addEventListener('click', (e) => {
+      if (
+        !sidebar.contains(e.target) &&
+        !toggle.contains(e.target) &&
+        !sidebar.classList.contains('-translate-x-full')
+      ) close();
+    });
+  })();
+</script>
