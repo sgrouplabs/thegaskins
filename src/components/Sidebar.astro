@@ -1,7 +1,13 @@
 ---
 /**
  * Sidebar.astro
- * The persistent luxury navigation rail. Fixed on desktop, slide-down on mobile.
+ * The persistent luxury navigation rail.
+ *
+ * Desktop (lg and up): persistent left-hand sidebar rail.
+ * Mobile (< lg): a full-screen dark overlay menu triggered by the top bar
+ *   hamburger. Links render in prominent Playfair Display serif with large
+ *   touch targets. Overlay fades in/out with the quiet-luxury aesthetic.
+ *
  * Active link uses aria-current for the gold-underline reveal.
  */
 import { BRAND, NAV } from '../config/site';
@@ -14,9 +20,12 @@ const { active } = Astro.props;
 const year = new Date().getFullYear();
 ---
 
+<!-- ──────────────────────────────────────────────
+     DESKTOP SIDEBAR (lg and up, persistent left rail)
+     ────────────────────────────────────────────── -->
 <aside
   id="sidebar"
-  class="fixed lg:static inset-y-0 left-0 z-40 w-64 shrink-0 border-r border-veil-700 bg-onyx-950/95 lg:bg-transparent backdrop-blur-md transition-transform duration-500 -translate-x-full lg:translate-x-0"
+  class="hidden lg:flex flex-col w-64 shrink-0 border-r border-veil-700"
   aria-label="Primary"
 >
   <div class="flex h-full flex-col px-6 py-8">
@@ -76,8 +85,8 @@ const year = new Date().getFullYear();
     <!-- Footer mark -->
     <div class="mt-12 pt-6 border-t border-veil-700">
       <p class="eyebrow text-paper-400">Private Concierge</p>
-      <p class="mt-2 font-serif text-paper-300 text-sm ">
-        “Restraint is the loudest signature.”
+      <p class="mt-2 font-serif text-paper-300 text-sm">
+        "Restraint is the loudest signature."
       </p>
       <p class="mt-4 font-mono text-[0.6rem] text-paper-400 tracking-wide-luxe">
         © {year} {BRAND.name}
@@ -86,9 +95,11 @@ const year = new Date().getFullYear();
   </div>
 </aside>
 
-<!-- Mobile top bar (shows monogram + menu toggle on small screens) -->
+<!-- ──────────────────────────────────────────────
+     MOBILE TOP BAR (below lg, fixed at top)
+     ────────────────────────────────────────────── -->
 <div
-  class="lg:hidden sticky top-0 z-30 flex items-center justify-between border-b border-veil-700 bg-onyx-950/95 backdrop-blur-md px-6 py-4"
+  class="lg:hidden sticky top-0 z-30 flex items-center justify-between border-b border-veil-700 bg-onyx-950/95 backdrop-blur-md px-5 py-4"
 >
   <a href={withBase('/')} class="flex items-center gap-3" aria-label={`${BRAND.name} — home`}>
     <span
@@ -96,44 +107,172 @@ const year = new Date().getFullYear();
     >
       {BRAND.monogram}
     </span>
-    <span class="font-display text-paper-50">{BRAND.name}</span>
+    <span class="font-display text-paper-50 text-lg">{BRAND.name}</span>
   </a>
   <button
-    id="sidebar-toggle"
-    class="text-paper-300 hover:text-paper-50 tracking-luxe text-xs uppercase border border-veil-700 px-3 py-2 transition-colors"
-    aria-controls="sidebar"
+    id="mobile-menu-toggle"
+    class="flex items-center gap-2 text-paper-300 hover:text-gold-300 text-xs tracking-luxe uppercase border border-veil-700 hover:border-gold-muted px-4 py-2.5 transition-colors duration-300"
+    aria-controls="mobile-menu-overlay"
     aria-expanded="false"
   >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+    >
+      <line x1="3" y1="6" x2="21" y2="6" />
+      <line x1="3" y1="12" x2="21" y2="12" />
+      <line x1="3" y1="18" x2="21" y2="18" />
+    </svg>
     Menu
   </button>
 </div>
 
+<!-- ──────────────────────────────────────────────
+     MOBILE FULL-SCREEN OVERLAY MENU
+     Dark backdrop + large serif nav links, fade/slide in
+     ────────────────────────────────────────────── -->
+<div
+  id="mobile-menu-overlay"
+  class="lg:hidden fixed inset-0 z-50 flex flex-col bg-onyx-950/98 backdrop-blur-lg opacity-0 pointer-events-none transition-opacity duration-400"
+  aria-hidden="true"
+>
+  <!-- Overlay header: monogram + close -->
+  <div class="flex items-center justify-between px-6 py-5 border-b border-veil-800">
+    <a href={withBase('/')} class="flex items-center gap-3" aria-label={`${BRAND.name} — home`}>
+      <span
+        class="flex h-10 w-10 items-center justify-center border border-gold-500/40 text-gold-400 font-display text-base tracking-luxe"
+      >
+        {BRAND.monogram}
+      </span>
+      <span class="font-display text-paper-50 text-xl">{BRAND.name}</span>
+    </a>
+    <button
+      id="mobile-menu-close"
+      class="flex items-center justify-center h-10 w-10 rounded-[3px] text-paper-300 hover:text-paper-50 hover:bg-veil-800 transition-colors duration-200"
+      aria-label="Close menu"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="22"
+        height="22"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+      >
+        <line x1="18" y1="6" x2="6" y2="18" />
+        <line x1="6" y1="6" x2="18" y2="18" />
+      </svg>
+    </button>
+  </div>
+
+  <!-- Large serif navigation links -->
+  <nav class="flex-1 flex flex-col justify-center px-8" aria-label="Mobile primary">
+    <p class="eyebrow text-gold-muted mb-8">Modules</p>
+    <ul class="space-y-2">
+      {
+        NAV.map((item) => {
+          const isActive = item.id === active;
+          return (
+            <li>
+              <a
+                href={withBase(item.href)}
+                aria-current={isActive ? 'page' : undefined}
+                class:list={[
+                  'flex items-baseline gap-4 py-4 transition-colors duration-300',
+                  isActive ? 'text-gold-300' : 'text-paper-200 hover:text-paper-50',
+                ]}
+              >
+                <span class="font-mono text-sm text-gold-muted w-8">
+                  {item.numeral}
+                </span>
+                <span class="flex flex-col leading-tight">
+                  {/* Serif display font for premium mobile nav */}
+                  <span class="font-display text-3xl tracking-luxe">
+                    {item.label}
+                  </span>
+                  <span class="text-[0.72rem] text-paper-400 tracking-wide lowercase mt-1">
+                    {item.subtitle}
+                  </span>
+                </span>
+              </a>
+            </li>
+          );
+        })
+      }
+    </ul>
+  </nav>
+
+  <!-- Overlay footer -->
+  <div class="px-8 py-6 border-t border-veil-800">
+    <p class="eyebrow text-paper-400 mb-2">Private Concierge</p>
+    <p class="font-serif text-paper-300 text-base">
+      "Restraint is the loudest signature."
+    </p>
+    <p class="mt-3 font-mono text-[0.62rem] text-paper-400 tracking-wide-luxe">
+      © {year} {BRAND.name}
+    </p>
+  </div>
+</div>
+
 <script is:inline>
   (function () {
-    const toggle = document.getElementById('sidebar-toggle');
-    const sidebar = document.getElementById('sidebar');
-    if (!toggle || !sidebar) return;
-    const close = () => {
-      sidebar.classList.add('-translate-x-full');
-      toggle.setAttribute('aria-expanded', 'false');
+    const toggle = document.getElementById('mobile-menu-toggle');
+    const closeBtn = document.getElementById('mobile-menu-close');
+    const overlay = document.getElementById('mobile-menu-overlay');
+    if (!toggle || !closeBtn || !overlay) return;
+
+    const openMenu = () => {
+      overlay.classList.remove('opacity-0', 'pointer-events-none');
+      overlay.setAttribute('aria-hidden', 'false');
+      toggle.setAttribute('aria-expanded', 'true');
+      document.body.style.overflow = 'hidden';
     };
-    toggle.addEventListener('click', () => {
-      const open = sidebar.classList.toggle('-translate-x-full') === false;
-      toggle.setAttribute('aria-expanded', String(open));
-    });
-    // Close on nav click (mobile)
-    sidebar.querySelectorAll('a').forEach((a) =>
+
+    const closeMenu = () => {
+      overlay.classList.add('opacity-0', 'pointer-events-none');
+      overlay.setAttribute('aria-hidden', 'true');
+      toggle.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    };
+
+    toggle.addEventListener('click', openMenu);
+    closeBtn.addEventListener('click', closeMenu);
+
+    // Close on nav link click (mobile)
+    overlay.querySelectorAll('a').forEach((a) =>
       a.addEventListener('click', () => {
-        if (window.matchMedia('(max-width: 1023px)').matches) close();
+        if (window.matchMedia('(max-width: 1023px)').matches) closeMenu();
       })
     );
-    // Close on outside tap (mobile)
-    document.addEventListener('click', (e) => {
-      if (
-        !sidebar.contains(e.target) &&
-        !toggle.contains(e.target) &&
-        !sidebar.classList.contains('-translate-x-full')
-      ) close();
+
+    // Close on ESC
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !overlay.classList.contains('pointer-events-none')) {
+        closeMenu();
+      }
+    });
+
+    // Re-bind after Astro view-transition page swaps
+    document.addEventListener('astro:page-load', () => {
+      const t = document.getElementById('mobile-menu-toggle');
+      const c = document.getElementById('mobile-menu-close');
+      const o = document.getElementById('mobile-menu-overlay');
+      if (!t || !c || !o) return;
+      t.addEventListener('click', openMenu);
+      c.addEventListener('click', closeMenu);
+      o.querySelectorAll('a').forEach((a) =>
+        a.addEventListener('click', () => {
+          if (window.matchMedia('(max-width: 1023px)').matches) closeMenu();
+        })
+      );
     });
   })();
 </script>

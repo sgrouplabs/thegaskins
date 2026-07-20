@@ -385,3 +385,98 @@ body::before {
   border-color: rgba(212, 175, 55, 0.5);
   background: rgba(212, 175, 55, 0.06);
 }
+
+/* ----------------------------------------------------------------
+   War Room — mobile horizontal scroll container
+   ---------------------------------------------------------------- */
+.warroom-columns {
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+.warroom-columns::-webkit-scrollbar {
+  height: 5px;
+}
+.warroom-columns::-webkit-scrollbar-track {
+  background: transparent;
+}
+.warroom-columns::-webkit-scrollbar-thumb {
+  background: rgba(212, 175, 55, 0.2);
+  border-radius: 2px;
+}
+@media (min-width: 1024px) {
+  .warroom-columns::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* ----------------------------------------------------------------
+   Itinerary — mobile bottom-sheet drawer
+   ---------------------------------------------------------------- */
+.itinerary-drawer {
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.5s ease, box-shadow 0.5s ease;
+}
+.itinerary-drawer.is-open {
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.04) inset,
+    0 30px 80px -30px rgba(212, 175, 55, 0.25);
+}
+
+/* Mobile: drawer becomes a bottom-sheet sliding up from bottom */
+@media (max-width: 1023px) {
+  .itinerary-drawer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    max-height: 80vh;
+    border-radius: 12px 12px 0 0;
+    border-top: 1px solid rgba(212, 175, 55, 0.3);
+    z-index: 50;
+    transform: translateY(100%);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .itinerary-drawer.is-open {
+    transform: translateY(0);
+  }
+  .itinerary-drawer:not(.is-open) {
+    opacity: 0;
+    pointer-events: none;
+  }
+}
+
+/* Bottom-sheet drag handle indicator */
+.drawer-drag-handle {
+  display: none;
+}
+@media (max-width: 1023px) {
+  .drawer-drag-handle {
+    display: flex;
+    width: 40px;
+    height: 4px;
+    border-radius: 2px;
+    background: rgba(245, 245, 247, 0.2);
+    margin: 0 auto 16px;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+/* Itinerary mobile list view */
+.itinerary-list-mobile {
+  display: none;
+}
+@media (max-width: 1023px) {
+  .itinerary-list-mobile {
+    display: block;
+  }
+  .itinerary-calendar-desktop {
+    display: none;
+  }
+}
+@media (min-width: 1024px) {
+  .itinerary-calendar-desktop {
+    display: block;
+  }
+}

@@ -174,14 +174,14 @@ export default function ReelDesk({ seedReels }: Props) {
 
   return (
     <section class="reel-desk">
-      {/* Section header */}
-      <div class="flex items-end justify-between gap-4 mb-6">
+      {/* Section header — stacks on mobile */}
+      <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-6">
         <div>
           <p class="eyebrow text-gold-muted">The Reel Desk</p>
-          <h2 class="font-display text-3xl text-paper-50 mt-1 leading-tight">
+          <h2 class="font-display text-2xl sm:text-3xl text-paper-50 mt-1 leading-tight">
             Saved Reels
           </h2>
-          <p class="font-serif text-paper-300 text-base mt-2 max-w-xl leading-relaxed">
+          <p class="font-serif text-paper-300 text-sm sm:text-base mt-2 max-w-xl leading-relaxed">
             Pin the reels worth studying. Each frame holds a link and a note —
             your personal filmstrip of reference work.
           </p>
@@ -196,7 +196,7 @@ export default function ReelDesk({ seedReels }: Props) {
           </span>
           <button
             type="button"
-            class="flex items-center gap-2 text-[0.7rem] font-mono tracking-wide-luxe uppercase text-[#1f1d1a] bg-gold-400 hover:bg-gold-300 px-4 py-2.5 rounded-[3px] transition-colors duration-300 font-semibold"
+            class="flex items-center gap-2 text-[0.7rem] font-mono tracking-wide-luxe uppercase text-[#1f1d1a] bg-gold-400 hover:bg-gold-300 px-4 py-2.5 rounded-[3px] transition-colors duration-300 font-semibold shrink-0"
             onClick={openAddModal}
           >
             <svg

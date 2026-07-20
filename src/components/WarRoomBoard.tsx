@@ -207,13 +207,13 @@ export default function WarRoomBoard({ initialMemos, columns }: Props) {
         </span>
       </div>
 
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
+      <div class="warroom-columns flex gap-6 lg:gap-8 overflow-x-auto lg:overflow-visible snap-x snap-mandatory lg:grid lg:grid-cols-3 pb-4 lg:pb-0 -mx-5 px-5 sm:mx-0 sm:px-0">
         {columns.map((col) => {
           const colMemos = memosByCol(col.id);
           const isOver = dragOverCol === col.id;
           return (
             <section
-              class={`warroom-col flex flex-col min-h-[60vh] transition-all duration-300 ${
+              class={`warroom-col flex flex-col min-h-[60vh] w-[85vw] sm:w-auto lg:min-h-[60vh] shrink-0 lg:shrink snap-start transition-all duration-300 ${
                 isOver ? 'ring-1 ring-gold-500/30' : ''
               }`}
               data-col={col.id}

@@ -33,9 +33,9 @@ import { VAULT_CATEGORIES, VAULT_CARDS, SEED_REELS } from '../config/site';
     <div class="rule-hair flex-1"></div>
   </div>
 
-  <!-- Filter bar: capsule-shaped tag buttons -->
+  <!-- Filter bar: capsule-shaped tag buttons (horizontal scroll on mobile) -->
   <div
-    class="flex flex-wrap gap-3 mb-10 animate-fade-rise"
+    class="flex flex-wrap gap-3 mb-8 sm:mb-10 animate-fade-rise overflow-x-auto sm:overflow-visible -mx-5 px-5 sm:mx-0 sm:px-0 pb-2 sm:pb-0"
     style="animation-delay: 80ms"
     role="tablist"
     aria-label="Filter inspiration by category"
@@ -54,10 +54,10 @@ import { VAULT_CATEGORIES, VAULT_CARDS, SEED_REELS } from '../config/site';
     }
   </div>
 
-  <!-- Masonry grid (CSS columns) -->
+  <!-- Masonry grid (CSS columns — single column on mobile) -->
   <div
     id="vault-grid"
-    class="columns-1 sm:columns-2 lg:columns-3 gap-6 animate-fade-rise"
+    class="columns-1 sm:columns-2 lg:columns-3 gap-4 sm:gap-6 animate-fade-rise"
     style="animation-delay: 140ms"
   >
     {

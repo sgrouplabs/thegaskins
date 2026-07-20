@@ -200,9 +200,12 @@ export default function ItineraryDrawer({ shoots, monthLabel }: Props) {
     <aside
       ref={drawerRef}
       id="itinerary-drawer"
-      class="itinerary-drawer surface-card p-7 self-start sticky top-8"
+      class="itinerary-drawer surface-card p-6 sm:p-7 self-start sticky top-8"
       aria-live="polite"
     >
+      {/* Mobile drag handle indicator */}
+      <div class="drawer-drag-handle"></div>
+
       {active ? (
         <div class="drawer-content animate-fade-rise">
           <div class="flex items-start justify-between gap-4 mb-1">
@@ -211,7 +214,7 @@ export default function ItineraryDrawer({ shoots, monthLabel }: Props) {
               {active.weekdayLabel} · {active.dateLabel}
             </span>
           </div>
-          <h3 class="font-display text-2xl text-paper-50 leading-tight mt-2">
+          <h3 class="font-display text-xl sm:text-2xl text-paper-50 leading-tight mt-2">
             {active.title}
           </h3>
 
@@ -230,12 +233,12 @@ export default function ItineraryDrawer({ shoots, monthLabel }: Props) {
                 <li>
                   <button
                     type="button"
-                    class="flex items-center gap-3 text-sm text-paper-200 w-full text-left group/del cursor-pointer"
+                    class="flex items-center gap-3 text-sm sm:text-base text-paper-200 w-full text-left group/del cursor-pointer py-1.5"
                     onClick={() => toggleDeliverable(i)}
                     aria-pressed={checked}
                   >
                     <span
-                      class={`w-3.5 h-3.5 border rounded-[1px] flex items-center justify-center text-[0.6rem] transition-all duration-300 ${
+                      class={`w-6 h-6 border rounded-[2px] flex items-center justify-center text-sm transition-all duration-300 shrink-0 ${
                         checked
                           ? 'border-gold-400 bg-gold-400 text-onyx-900'
                           : 'border-veil-500 text-transparent group-hover/del:border-gold-muted'
@@ -293,7 +296,7 @@ export default function ItineraryDrawer({ shoots, monthLabel }: Props) {
                     role="radio"
                     aria-checked={selected}
                     data-status={st}
-                    class={`status-btn px-3 py-2.5 border text-[0.68rem] font-sans tracking-luxe uppercase transition-all duration-300 rounded-[2px] ${
+                    class={`status-btn px-3 py-3 sm:py-2.5 border text-xs sm:text-[0.68rem] font-sans tracking-luxe uppercase transition-all duration-300 rounded-[2px] ${
                       selected
                         ? `${meta.ring} ${meta.tone} bg-onyx-800`
                         : 'border-veil-700 text-paper-400 hover:text-paper-100 hover:border-veil-500'
@@ -313,7 +316,7 @@ export default function ItineraryDrawer({ shoots, monthLabel }: Props) {
       ) : (
         <div id="drawer-empty">
           <p class="eyebrow mb-3">Detail</p>
-          <h3 class="font-display text-2xl text-paper-50 leading-tight">
+          <h3 class="font-display text-xl sm:text-2xl text-paper-50 leading-tight">
             Select a dated shoot.
           </h3>
           <div class="rule-hair my-5"></div>

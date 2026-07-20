@@ -54,9 +54,54 @@ const statusDot: Record<string, string> = {
     </div>
   </div>
 
-  <div class="grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-10 animate-fade-rise" style="animation-delay: 80ms">
-    <!-- Calendar grid -->
-    <section>
+  <div class="animate-fade-rise" style="animation-delay: 80ms">
+    <!-- Mobile: vertical list | Desktop: calendar + drawer side-by-side -->
+    <div class="grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-6 lg:gap-10">
+
+    <!-- ──────────────────────────────────────────────
+         MOBILE: Vertical list of shoots (below lg)
+         ────────────────────────────────────────────── -->
+    <section class="itinerary-list-mobile lg:hidden space-y-4">
+      <p class="eyebrow text-gold-muted mb-2">Upcoming Shoots</p>
+      {
+        SHOOTS.map((shoot) => (
+          <button
+            class="itinerary-day w-full text-left bg-onyx-900 border border-veil-700 hover:border-gold-muted transition-colors duration-300 rounded-[3px] p-5 group"
+            data-day={shoot.day}
+            data-shoot={shoot.id}
+            aria-label={`View shoot on ${shoot.weekdayLabel} July ${shoot.day}: ${shoot.title}`}
+          >
+            <div class="flex items-center justify-between gap-3 mb-2">
+              <span class="font-mono text-sm text-gold-muted">
+                {String(shoot.day).padStart(2, '0')} · {shoot.weekdayLabel.slice(0, 3)}
+              </span>
+              <div
+                class="flex items-center gap-1.5"
+                data-status-cell={shoot.id}
+                data-current-status={shoot.status}
+              >
+                <span
+                  class:list={['w-2 h-2 rounded-full', statusDot[shoot.status]]}
+                  data-cell-dot
+                ></span>
+                <span class="text-[0.62rem] font-mono tracking-wide-luxe uppercase text-paper-400">
+                  {shoot.status}
+                </span>
+              </div>
+            </div>
+            <h3 class="font-display text-lg text-paper-100 group-hover:text-gold-300 transition-colors leading-tight">
+              {shoot.title}
+            </h3>
+            <p class="font-serif text-paper-400 text-sm mt-1">{shoot.vibe}</p>
+          </button>
+        ))
+      }
+    </section>
+
+    <!-- ──────────────────────────────────────────────
+         DESKTOP: Calendar grid (lg and up)
+         ────────────────────────────────────────────── -->
+    <section class="itinerary-calendar-desktop hidden lg:block">
       <div class="grid grid-cols-7 gap-px bg-veil-700 border border-veil-700">
         {
           WEEKDAYS.map((d) => (
@@ -119,6 +164,7 @@ const statusDot: Record<string, string> = {
       shoots={SHOOTS}
       monthLabel={ITINERARY_MONTH_LABEL}
     />
+    </div>
   </div>
 </DashboardLayout>
 
@@ -142,16 +188,6 @@ const statusDot: Record<string, string> = {
 </script>
 
 <style is:global>
-  /* Drawer slide-in polish */
-  .itinerary-drawer {
-    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
-      opacity 0.5s ease, box-shadow 0.5s ease;
-  }
-  .itinerary-drawer.is-open {
-    box-shadow:
-      0 1px 0 rgba(255, 255, 255, 0.04) inset,
-      0 30px 80px -30px rgba(212, 175, 55, 0.25);
-  }
   .status-btn[aria-checked='true'] {
     box-shadow: 0 0 0 1px currentColor inset;
   }
