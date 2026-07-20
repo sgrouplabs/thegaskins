@@ -224,55 +224,69 @@ const year = new Date().getFullYear();
 
 <script is:inline>
   (function () {
-    const toggle = document.getElementById('mobile-menu-toggle');
-    const closeBtn = document.getElementById('mobile-menu-close');
-    const overlay = document.getElementById('mobile-menu-overlay');
-    if (!toggle || !closeBtn || !overlay) return;
-
+    // IMPORTANT: query the DOM fresh on every invocation.
+    // Astro <ClientRouter /> view transitions swap the <body> markup, which
+    // detaches the nodes captured in any closure. If openMenu/closeMenu held
+    // references to the original overlay/toggle, clicking the menu after a
+    // view-transition navigation would lock body scroll (overflow:hidden is
+    // global) while operating on a detached overlay — the page would freeze
+    // and the menu would never open. Re-querying each call fixes that.
     const openMenu = () => {
-      overlay.classList.remove('opacity-0', 'pointer-events-none');
-      overlay.setAttribute('aria-hidden', 'false');
-      toggle.setAttribute('aria-expanded', 'true');
+      const ov = document.getElementById('mobile-menu-overlay');
+      const tg = document.getElementById('mobile-menu-toggle');
+      if (!ov || !tg) return;
+      ov.classList.remove('opacity-0', 'pointer-events-none');
+      ov.setAttribute('aria-hidden', 'false');
+      tg.setAttribute('aria-expanded', 'true');
       document.body.style.overflow = 'hidden';
     };
 
     const closeMenu = () => {
-      overlay.classList.add('opacity-0', 'pointer-events-none');
-      overlay.setAttribute('aria-hidden', 'true');
-      toggle.setAttribute('aria-expanded', 'false');
+      const ov = document.getElementById('mobile-menu-overlay');
+      const tg = document.getElementById('mobile-menu-toggle');
+      if (!ov || !tg) return;
+      ov.classList.add('opacity-0', 'pointer-events-none');
+      ov.setAttribute('aria-hidden', 'true');
+      tg.setAttribute('aria-expanded', 'false');
       document.body.style.overflow = '';
     };
 
-    toggle.addEventListener('click', openMenu);
-    closeBtn.addEventListener('click', closeMenu);
+    const isOpen = () => {
+      const ov = document.getElementById('mobile-menu-overlay');
+      return !!ov && !ov.classList.contains('pointer-events-none');
+    };
 
-    // Close on nav link click (mobile)
-    overlay.querySelectorAll('a').forEach((a) =>
-      a.addEventListener('click', () => {
-        if (window.matchMedia('(max-width: 1023px)').matches) closeMenu();
-      })
-    );
-
-    // Close on ESC
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && !overlay.classList.contains('pointer-events-none')) {
-        closeMenu();
-      }
-    });
-
-    // Re-bind after Astro view-transition page swaps
-    document.addEventListener('astro:page-load', () => {
-      const t = document.getElementById('mobile-menu-toggle');
-      const c = document.getElementById('mobile-menu-close');
-      const o = document.getElementById('mobile-menu-overlay');
-      if (!t || !c || !o) return;
-      t.addEventListener('click', openMenu);
-      c.addEventListener('click', closeMenu);
-      o.querySelectorAll('a').forEach((a) =>
+    const bindTriggers = () => {
+      const tg = document.getElementById('mobile-menu-toggle');
+      const cl = document.getElementById('mobile-menu-close');
+      const ov = document.getElementById('mobile-menu-overlay');
+      if (!tg || !cl || !ov) return;
+      if (tg.dataset.bound === '1') return;
+      tg.dataset.bound = '1';
+      tg.addEventListener('click', openMenu);
+      cl.addEventListener('click', closeMenu);
+      ov.querySelectorAll('a').forEach((a) =>
         a.addEventListener('click', () => {
           if (window.matchMedia('(max-width: 1023px)').matches) closeMenu();
         })
       );
+    };
+
+    bindTriggers();
+
+    // Close on ESC (document-level, lives across view transitions)
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && isOpen()) closeMenu();
+    });
+
+    // Re-bind triggers after Astro view-transition page swaps
+    document.addEventListener('astro:page-load', bindTriggers);
+
+    // Safety net: if a view transition fires while the menu is open, the
+    // overlay node is replaced and body overflow could stay locked. Ensure
+    // scroll is restored on every navigation.
+    document.addEventListener('astro:before-swap', () => {
+      document.body.style.overflow = '';
     });
   })();
 </script>
