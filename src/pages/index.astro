@@ -57,22 +57,22 @@ const dateLabel = new Date().toLocaleDateString('en-US', {
     <ol class="divide-y divide-veil-700 border-y border-veil-700">
       {
         GLANCE_TASKS.map((task, i) => (
-          <li class="grid grid-cols-12 gap-3 sm:gap-4 py-5 sm:py-6 items-baseline group">
-            <span class="col-span-2 sm:col-span-1 font-mono text-gold-muted text-sm">
+          <li class="grid grid-cols-1 md:grid-cols-12 gap-1.5 md:gap-4 md:items-baseline py-5 md:py-6 group">
+            <span class="font-mono text-gold-muted text-sm md:col-span-1">
               {String(i + 1).padStart(2, '0')}
             </span>
-            <div class="col-span-10 sm:col-span-12 md:col-span-6">
+            <div class="md:col-span-6">
               <h3 class="font-display text-lg sm:text-xl text-paper-50 group-hover:text-gold-300 transition-colors duration-500">
                 {task.title}
               </h3>
-              <p class="mt-1 text-sm text-paper-300 font-serif">
+              <p class="md:hidden mt-1 text-sm text-paper-300 font-serif">
                 {task.vibe}
               </p>
             </div>
-            <div class="col-span-6 sm:col-span-6 md:col-span-3 text-paper-400 text-xs sm:text-sm tracking-luxe uppercase">
+            <p class="hidden md:block md:col-span-3 text-paper-400 text-xs sm:text-sm tracking-luxe uppercase">
               {task.vibe}
-            </div>
-            <div class="col-span-6 sm:col-span-6 md:col-span-2 text-right md:text-left font-mono text-xs sm:text-sm text-paper-200">
+            </p>
+            <div class="font-mono text-xs sm:text-sm text-paper-200 md:col-span-2 md:text-left">
               {task.dateLabel}
             </div>
           </li>
