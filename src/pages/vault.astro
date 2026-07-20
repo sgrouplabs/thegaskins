@@ -7,7 +7,8 @@
  */
 import DashboardLayout from '../layouts/DashboardLayout.astro';
 import VaultCard from '../components/VaultCard.astro';
-import { VAULT_CATEGORIES, VAULT_CARDS } from '../config/site';
+import ReelDesk from '../components/ReelDesk.tsx';
+import { VAULT_CATEGORIES, VAULT_CARDS, SEED_REELS } from '../config/site';
 ---
 
 <DashboardLayout
@@ -19,6 +20,18 @@ import { VAULT_CATEGORIES, VAULT_CARDS } from '../config/site';
   <p class="font-serif  text-paper-300 text-lg max-w-2xl leading-relaxed mb-10 animate-fade-rise">
     A curated reference room. Study the frame before you film it.
   </p>
+
+  <!-- The Reel Desk — saved reel links filmstrip (Preact island) -->
+  <div class="mb-16 animate-fade-rise" style="animation-delay: 60ms">
+    <ReelDesk client:load seedReels={SEED_REELS} />
+  </div>
+
+  <!-- Section divider before the inspiration grid -->
+  <div class="flex items-center gap-6 mb-10">
+    <div class="rule-hair flex-1"></div>
+    <span class="eyebrow text-gold-muted">The Reference Room</span>
+    <div class="rule-hair flex-1"></div>
+  </div>
 
   <!-- Filter bar: capsule-shaped tag buttons -->
   <div

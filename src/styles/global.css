@@ -309,3 +309,79 @@ body::before {
 ::view-transition-new(root) {
   animation-duration: 0.35s;
 }
+
+/* ----------------------------------------------------------------
+   The Reel Desk — 35mm filmstrip styling
+   ---------------------------------------------------------------- */
+.reel-desk {
+  position: relative;
+}
+
+/* The filmstrip rail — dark celluloid background with sprocket rails */
+.reel-strip {
+  background:
+    linear-gradient(180deg, #0a0a0b 0%, #080809 50%, #0a0a0b 100%);
+  border-top: 1px solid rgba(212, 175, 55, 0.08);
+  border-bottom: 1px solid rgba(212, 175, 55, 0.08);
+  scroll-snap-type: x proximity;
+}
+
+.reel-strip::-webkit-scrollbar {
+  height: 8px;
+}
+.reel-strip::-webkit-scrollbar-track {
+  background: #0a0a0b;
+}
+.reel-strip::-webkit-scrollbar-thumb {
+  background: rgba(212, 175, 55, 0.25);
+  border-radius: 2px;
+}
+.reel-strip::-webkit-scrollbar-thumb:hover {
+  background: rgba(212, 175, 55, 0.45);
+}
+
+/* Sprocket perforations — the 35mm film holes top + bottom */
+.reel-sprocket {
+  width: 14px;
+  height: 7px;
+  border-radius: 2px;
+  margin-top: 6px;
+  margin-bottom: 6px;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.9);
+}
+.reel-sprockets-top .reel-sprocket {
+  margin-top: 6px;
+  margin-bottom: 0;
+}
+.reel-sprockets-bottom .reel-sprocket {
+  margin-top: 0;
+  margin-bottom: 6px;
+}
+
+/* A single reel frame on the strip */
+.reel-frame {
+  scroll-snap-align: start;
+}
+.reel-thumb {
+  border-radius: 2px;
+  border: 1px solid rgba(212, 175, 55, 0.12);
+  transition: border-color 0.4s ease, transform 0.4s ease;
+}
+.reel-frame:hover .reel-thumb {
+  border-color: rgba(212, 175, 55, 0.45);
+  transform: translateY(-2px);
+}
+
+/* Empty-state add tile at end of strip */
+.reel-frame-add {
+  width: 150px;
+  min-height: 266px; /* matches 9/16 thumb + caption */
+  border: 1px dashed rgba(212, 175, 55, 0.25);
+  border-radius: 3px;
+  background: rgba(212, 175, 55, 0.03);
+  transition: border-color 0.3s ease, background 0.3s ease;
+}
+.reel-frame-add:hover {
+  border-color: rgba(212, 175, 55, 0.5);
+  background: rgba(212, 175, 55, 0.06);
+}

@@ -366,3 +366,30 @@ export const MEMOS: Memo[] = [
     status: 'ready',
   },
 ];
+
+// ---------------------------------------------------------------------------
+// THE REEL DESK — saved reel links (user-curated, localStorage-backed).
+// Seeded with two examples so the filmstrip reads on first visit; the user
+// can delete these and add their own via the in-page modal.
+// ---------------------------------------------------------------------------
+export type SavedReel = {
+  id: string;
+  url: string;
+  title: string;
+  note: string;
+};
+
+export const SEED_REELS: SavedReel[] = [
+  {
+    id: 'r1',
+    url: 'https://www.tiktok.com/@donyetaylor/video/7250000000000000000',
+    title: '3-Second Type Hook Reference',
+    note: 'Rapid typographic overlay pattern — study the cadence of the text callouts.',
+  },
+  {
+    id: 'r2',
+    url: 'https://www.instagram.com/reel/CxYzAbC1234/',
+    title: 'Voiceover Workflow Study',
+    note: 'Flawless corporate-to-creator voiceover pacing. Borrow the transition timing.',
+  },
+];
