@@ -1,0 +1,9 @@
+# docker-compose.yml — The Gaskins dashboard
+# Runs the static Astro build behind nginx on port 3005.
+services:
+  thegaskins:
+    build: .
+    container_name: thegaskins
+    ports:
+      - "3005:80"
+    restart: unless-stopped

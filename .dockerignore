@@ -1,0 +1,8 @@
+# Build artifacts (kept out of the Docker build context)
+node_modules
+dist
+.astro
+.git
+.gitignore
+*.log
+.DS_Store
