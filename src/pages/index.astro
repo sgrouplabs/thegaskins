@@ -6,6 +6,7 @@
  */
 import DashboardLayout from '../layouts/DashboardLayout.astro';
 import { BRAND, GLANCE_TASKS, METRICS } from '../config/site';
+import { withBase } from '../utils/base';
 
 const hour = new Date().getHours();
 const greet =
@@ -46,7 +47,7 @@ const dateLabel = new Date().toLocaleDateString('en-US', {
         </h2>
       </div>
       <a
-        href="/itinerary"
+        href={withBase('/itinerary')}
         class="gold-underline text-paper-300 hover:text-paper-50 text-sm tracking-luxe uppercase"
       >
         View full itinerary →

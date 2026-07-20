@@ -8,6 +8,7 @@
  */
 import { ClientRouter } from 'astro:transitions';
 import { BRAND, NAV } from '../config/site';
+import { BASE_URL } from '../utils/base';
 import Sidebar from '../components/Sidebar.astro';
 import '../styles/global.css';
 
@@ -32,7 +33,7 @@ const current = NAV.find((n) => n.id === active) ?? NAV[0];
       name="description"
       content={`${BRAND.name} — ${BRAND.tagline}. A private creator command center.`}
     />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href={`${BASE_URL}favicon.svg`} />
 
     <!-- Typography: Playfair Display (display serif) + Cormorant Garamond (serif emphasis) + Inter (sans body) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />

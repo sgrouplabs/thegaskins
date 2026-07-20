@@ -5,6 +5,7 @@
  * Active link uses aria-current for the gold-underline reveal.
  */
 import { BRAND, NAV } from '../config/site';
+import { withBase } from '../utils/base';
 
 interface Props {
   active: string;
@@ -21,7 +22,7 @@ const year = new Date().getFullYear();
   <div class="flex h-full flex-col px-6 py-8">
     <!-- Crest / monogram -->
     <div class="mb-12">
-      <a href="/" class="block group" aria-label={`${BRAND.name} — home`}>
+      <a href={withBase('/')} class="block group" aria-label={`${BRAND.name} — home`}>
         <div
           class="flex h-12 w-12 items-center justify-center border border-gold-500/40 text-gold-400 font-display text-xl tracking-luxe group-hover:border-gold-400 transition-colors duration-500"
         >
@@ -44,7 +45,7 @@ const year = new Date().getFullYear();
             return (
               <li>
                 <a
-                  href={item.href}
+                  href={withBase(item.href)}
                   aria-current={isActive ? 'page' : undefined}
                   class:list={[
                     'gold-underline flex items-baseline gap-4 py-2.5 text-sm transition-colors duration-300',
@@ -89,7 +90,7 @@ const year = new Date().getFullYear();
 <div
   class="lg:hidden sticky top-0 z-30 flex items-center justify-between border-b border-veil-700 bg-onyx-950/95 backdrop-blur-md px-6 py-4"
 >
-  <a href="/" class="flex items-center gap-3" aria-label={`${BRAND.name} — home`}>
+  <a href={withBase('/')} class="flex items-center gap-3" aria-label={`${BRAND.name} — home`}>
     <span
       class="flex h-9 w-9 items-center justify-center border border-gold-500/40 text-gold-400 font-display text-sm tracking-luxe"
     >
