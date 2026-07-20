@@ -14,6 +14,7 @@
  * instant, and visually editorial. No video loops.
  */
 import type { VaultCard as TVaultCard } from '../config/site';
+import { withBase } from '../utils/base';
 
 interface Props {
   card: TVaultCard;
@@ -29,7 +30,7 @@ const segments = card.url.replace(/\/$/, '').split('/');
 let handle = segments.pop() || card.source;
 if (handle === 'reels' && segments.length) handle = segments.pop() || card.source;
 
-// Monogram initials for the large thumbnail crest.
+// Monogram initials for the thumbnail crest (fallback when no avatar).
 const monogram = card.title
   .replace(/[^A-Za-z\s]/g, '')
   .split(/\s+/)
@@ -44,6 +45,9 @@ const monogram = card.title
 const platformTint = isInstagram
   ? 'rgba(212,175,55,0.16)' // warm gold lean for IG
   : 'rgba(159,176,196,0.14)'; // cool slate lean for TT
+
+// Avatar src (base-path aware) — may be undefined.
+const avatarSrc = card.avatar ? withBase(card.avatar) : null;
 ---
 
 <article
@@ -86,11 +90,22 @@ const platformTint = isInstagram
         </span>
       </div>
 
-      <!-- Center: monogram crest -->
+      <!-- Center: profile avatar (with monogram fallback) -->
       <div class="flex-1 flex items-center justify-center">
         <div class="relative">
+          {avatarSrc ? (
+            <img
+              src={avatarSrc}
+              alt={`${card.title} profile picture`}
+              loading="lazy"
+              decoding="async"
+              class="h-16 w-16 rounded-full object-cover border border-gold-500/30 group-hover:border-gold-400/60 transition-colors duration-500"
+              style="background: linear-gradient(160deg, rgba(255,255,255,0.03), rgba(0,0,0,0.2));"
+              onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+            />
+          ) : null}
           <div
-            class="flex h-16 w-16 items-center justify-center border border-gold-500/25 font-display text-2xl tracking-luxe text-paper-100 group-hover:border-gold-400/50 group-hover:text-gold-300 transition-colors duration-500"
+            class={`h-16 w-16 items-center justify-center border border-gold-500/25 font-display text-2xl tracking-luxe text-paper-100 group-hover:border-gold-400/50 group-hover:text-gold-300 transition-colors duration-500 ${avatarSrc ? 'hidden' : 'flex'}`}
             style="background: linear-gradient(160deg, rgba(255,255,255,0.03), rgba(0,0,0,0.2));"
           >
             {monogram}

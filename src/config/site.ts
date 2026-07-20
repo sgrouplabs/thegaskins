@@ -197,6 +197,8 @@ export type VaultCard = {
   category: Exclude<VaultCategory, 'All'>;
   strategy: string;
   source: string;
+  /** Local static profile-picture path under /public/avatars (optional). */
+  avatar?: string;
 };
 
 export const VAULT_CARDS: VaultCard[] = [
@@ -208,6 +210,7 @@ export const VAULT_CARDS: VaultCard[] = [
     strategy:
       'Focus on the tight aesthetic transitions from personal morning wellness directly into high-level strategy execution.',
     source: '@daynabolden',
+    avatar: '/avatars/tt_daynabolden.jpg',
   },
   {
     id: 'v2',
@@ -217,6 +220,7 @@ export const VAULT_CARDS: VaultCard[] = [
     strategy:
       "Analyze her hyper-clean home aesthetics and relatable lifestyle vlogging pacing.",
     source: '@christinsherise',
+    avatar: '/avatars/tt_christinsherise.jpg',
   },
   {
     id: 'v3',
@@ -226,6 +230,7 @@ export const VAULT_CARDS: VaultCard[] = [
     strategy:
       'Study his direct-to-camera authority on monetization and business scaling.',
     source: '@davidomari',
+    avatar: '/avatars/tt_davidomari.jpg',
   },
   {
     id: 'v4',
@@ -235,6 +240,7 @@ export const VAULT_CARDS: VaultCard[] = [
     strategy:
       "Examine his relatable 'Day in the Life' pacing for modern tech/professional routines.",
     source: '@lifewjibran',
+    avatar: '/avatars/tt_lifewjibran.jpg',
   },
   {
     id: 'v5',
@@ -244,6 +250,7 @@ export const VAULT_CARDS: VaultCard[] = [
     strategy:
       'Examine the balance of dual-frame focus where both partners bring aligned energy to the business narrative.',
     source: '@gogoandmo',
+    avatar: '/avatars/tt_gogoandmo.jpg',
   },
   {
     id: 'v6',
@@ -253,6 +260,7 @@ export const VAULT_CARDS: VaultCard[] = [
     strategy:
       'Note how she breaks down the granular, B2B operational side of running a brick-and-mortar facility.',
     source: '@ms.preschoolowner',
+    avatar: '/avatars/tt_ms_preschoolowner.jpg',
   },
   {
     id: 'v7',
@@ -262,6 +270,7 @@ export const VAULT_CARDS: VaultCard[] = [
     strategy:
       'Emulate the raw behind-the-scenes cuts—shifting smoothly between high-profile operations and warehouse management.',
     source: '@ronnebrown',
+    avatar: '/avatars/ig_ronnebrown.jpg',
   },
   {
     id: 'v8',
@@ -271,6 +280,7 @@ export const VAULT_CARDS: VaultCard[] = [
     strategy:
       'Analyze how she uses rapid typographic overlays and bold text callouts within the first 3 seconds to command attention.',
     source: '@donyetaylor',
+    avatar: '/avatars/ig_donyetaylor.jpg',
   },
   {
     id: 'v9',
@@ -280,6 +290,7 @@ export const VAULT_CARDS: VaultCard[] = [
     strategy:
       'Study her flawless voiceovers detailing her corporate-to-creator workflow.',
     source: '@kameronmonet',
+    avatar: '/avatars/ig_kameronmonet.jpg',
   },
   {
     id: 'v10',
@@ -289,6 +300,7 @@ export const VAULT_CARDS: VaultCard[] = [
     strategy:
       'Incorporate satisfying, close-up sensory B-roll of premium assets and high-end vehicle maintenance.',
     source: '@detailz.matter',
+    avatar: '/avatars/tt_detailz_matter.jpg',
   },
   {
     id: 'v11',
@@ -298,6 +310,7 @@ export const VAULT_CARDS: VaultCard[] = [
     strategy:
       "Study the ASMR-style audio hooks and visually satisfying 'before and after' transitions.",
     source: '@blissautodetailing',
+    avatar: '/avatars/tt_blissautodetailing.jpg',
   },
 ];
 
@@ -377,6 +390,8 @@ export type SavedReel = {
   url: string;
   title: string;
   note: string;
+  /** Optional local avatar/thumbnail path under /public/avatars. */
+  avatar?: string;
 };
 
 export const SEED_REELS: SavedReel[] = [
@@ -385,11 +400,13 @@ export const SEED_REELS: SavedReel[] = [
     url: 'https://www.tiktok.com/@donyetaylor/video/7250000000000000000',
     title: '3-Second Type Hook Reference',
     note: 'Rapid typographic overlay pattern — study the cadence of the text callouts.',
+    avatar: '/avatars/ig_donyetaylor.jpg',
   },
   {
     id: 'r2',
     url: 'https://www.instagram.com/reel/CxYzAbC1234/',
     title: 'Voiceover Workflow Study',
     note: 'Flawless corporate-to-creator voiceover pacing. Borrow the transition timing.',
+    avatar: '/avatars/ig_kameronmonet.jpg',
   },
 ];

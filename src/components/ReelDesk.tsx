@@ -313,9 +313,18 @@ function ReelFrame({
     .join('')
     .toUpperCase() || '◉';
 
+  // Avatar src — base-path aware for the /tg subpath deployment.
+  const rawBase = import.meta.env.BASE_URL as string;
+  const baseUrl = rawBase.endsWith('/') ? rawBase : `${rawBase}/`;
+  const avatarSrc = reel.avatar
+    ? `${baseUrl}${reel.avatar.replace(/^\//, '')}`
+    : null;
+  const [imgError, setImgError] = useState(false);
+  const showAvatar = avatarSrc && !imgError;
+
   return (
     <article class="reel-frame group relative shrink-0 flex flex-col">
-      {/* Thumbnail — play glyph + monogram + platform marker */}
+      {/* Thumbnail — avatar + play glyph + platform marker */}
       <a
         href={reel.url}
         target="_blank"
@@ -333,6 +342,22 @@ function ReelFrame({
           `}
         ></div>
 
+        {/* Avatar as a full-bleed cover image (when available) */}
+        {showAvatar && (
+          <img
+            src={avatarSrc}
+            alt={`${reel.title} thumbnail`}
+            loading="lazy"
+            decoding="async"
+            class="absolute inset-0 h-full w-full object-cover opacity-90 group-hover:opacity-100 transition-opacity duration-500"
+            onError={() => setImgError(true)}
+          />
+        )}
+        {/* Darkening overlay so the platform marker + play glyph read on top */}
+        {showAvatar && (
+          <div class="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/55 pointer-events-none"></div>
+        )}
+
         {/* Top: platform marker */}
         <div class="absolute top-2 left-2 right-2 flex items-center justify-between">
           <span class="font-mono text-[0.55rem] tracking-wide-luxe uppercase text-paper-100 border border-gold-500/30 px-1.5 py-0.5 backdrop-blur-sm">
@@ -343,14 +368,16 @@ function ReelFrame({
           </span>
         </div>
 
-        {/* Center: monogram crest + play glyph overlay */}
+        {/* Center: monogram crest (fallback) + play glyph overlay */}
         <div class="absolute inset-0 flex flex-col items-center justify-center gap-2">
-          <div
-            class="flex h-12 w-12 items-center justify-center border border-gold-500/25 font-display text-base tracking-luxe text-paper-100 group-hover:border-gold-400/60 transition-colors duration-500"
-            style="background: linear-gradient(160deg, rgba(255,255,255,0.03), rgba(0,0,0,0.2));"
-          >
-            {monogram}
-          </div>
+          {!showAvatar && (
+            <div
+              class="flex h-12 w-12 items-center justify-center border border-gold-500/25 font-display text-base tracking-luxe text-paper-100 group-hover:border-gold-400/60 transition-colors duration-500"
+              style="background: linear-gradient(160deg, rgba(255,255,255,0.03), rgba(0,0,0,0.2));"
+            >
+              {monogram}
+            </div>
+          )}
           {/* Play glyph */}
           <svg
             xmlns="http://www.w3.org/2000/svg"
