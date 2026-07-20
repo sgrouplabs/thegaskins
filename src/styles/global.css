@@ -37,13 +37,12 @@
   --color-status-filmed: #9fb0c4;
   --color-status-edited: #c5a059;
 
-  /* Typography — all sans-serif per spec.
-     Space Grotesk (display/headings) has editorial character without
-     being a serif; Inter (body + emphasis) is hyper-clean and legible;
-     JetBrains Mono for numerals/credits. */
-  --font-display: 'Space Grotesk', 'Inter', system-ui, sans-serif;
-  --font-serif: 'Inter', system-ui, sans-serif;
-  --font-sans: 'Inter', system-ui, sans-serif;
+  /* Typography — premium serif for headings/emphasis, clean sans for body.
+     Per spec: Playfair Display (display serif), Cormorant Garamond (serif
+     emphasis body), Inter (sans for nav/body), JetBrains Mono (numerals). */
+  --font-display: 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
+  --font-serif: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
+  --font-sans: 'Inter', 'Helvetica Neue', Arial, sans-serif;
   --font-mono: 'JetBrains Mono', 'Courier New', monospace;
 
   /* Tracking */
