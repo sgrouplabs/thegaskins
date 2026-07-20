@@ -137,7 +137,7 @@ export default function ItineraryDrawer({ shoots, monthLabel }: Props) {
           <div class="rule-gold my-5 w-full max-w-[80px]"></div>
 
           <p class="eyebrow mb-2">Location / Vibe Profile</p>
-          <p class="font-serif italic text-paper-200 leading-relaxed mb-6">
+          <p class="font-serif  text-paper-200 leading-relaxed mb-6">
             {active.vibe}
           </p>
 
@@ -205,7 +205,7 @@ export default function ItineraryDrawer({ shoots, monthLabel }: Props) {
             Select a dated shoot.
           </h3>
           <div class="rule-hair my-5"></div>
-          <p class="font-serif italic text-paper-300 leading-relaxed">
+          <p class="font-serif  text-paper-300 leading-relaxed">
             Tap any glowing date on the calendar to reveal its shoot brief —
             location, vibe, deliverables, and a live status selector.
           </p>

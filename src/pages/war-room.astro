@@ -14,7 +14,7 @@ import { KANBAN_COLUMNS, MEMOS } from '../config/site';
   eyebrow="III · The War Room"
   title="The Memo Board"
 >
-  <p class="font-serif italic text-paper-300 text-lg max-w-2xl leading-relaxed mb-12 animate-fade-rise">
+  <p class="font-serif  text-paper-300 text-lg max-w-2xl leading-relaxed mb-12 animate-fade-rise">
     Half-thoughts, held gently. Move nothing until it is ready to be filmed.
   </p>
 
@@ -56,7 +56,7 @@ import { KANBAN_COLUMNS, MEMOS } from '../config/site';
                     ))}
                   </div>
 
-                  <p class="font-serif text-[0.92rem] leading-relaxed text-[#3a342a] italic">
+                  <p class="font-serif text-[0.92rem] leading-relaxed text-[#3a342a] ">
                     {memo.summary}
                   </p>
 
@@ -73,7 +73,7 @@ import { KANBAN_COLUMNS, MEMOS } from '../config/site';
 
               {colMemos.length === 0 && (
                 <div class="border border-dashed border-veil-600 rounded-[2px] p-6 text-center">
-                  <p class="font-serif italic text-paper-400 text-sm">An empty drawer.</p>
+                  <p class="font-serif  text-paper-400 text-sm">An empty drawer.</p>
                 </div>
               )}
             </div>
@@ -85,7 +85,7 @@ import { KANBAN_COLUMNS, MEMOS } from '../config/site';
 
   <!-- War room footer note -->
   <div class="mt-14 rule-gold w-full max-w-[120px] mb-5"></div>
-  <p class="font-serif italic text-paper-300 text-base max-w-xl">
+  <p class="font-serif  text-paper-300 text-base max-w-xl">
     Drag a memo across columns when its shape has settled. The system does not
     enforce the move — you do.
   </p>
